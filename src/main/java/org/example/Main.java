@@ -46,6 +46,18 @@ class RestApiController {
         return product;
     }
 
+    @PutMapping("/product/{id}")
+    Product putProduct(@PathVariable UUID id, @RequestBody Product product){
+        int productIndex = -1;
+        for (Product c : products){
+            if(c.getId().equals(id)){
+                productIndex = products.indexOf(c);
+                products.set(productIndex, product);
+            }
+        }
+        return (productIndex == -1) ? postProduct(product) : product;
+    }
+
 
 
 }
