@@ -1,53 +1,53 @@
 package org.example.controller;
 
 import org.example.model.Product;
+import org.example.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 class RestApiController {
-    private ArrayList<Product> products = new ArrayList<>();
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public RestApiController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @GetMapping("/products")
     Iterable<Product> getProducts() {
-        return products;
+        return productRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    Optional<Product> getProductsById(@PathVariable UUID id) {
-        for (Product c : products) {
-            if (c.getId().equals(id)) {
-                return Optional.of(c);
-            }
-        }
-        return Optional.empty();
+    Product getProductsById(@PathVariable("id") Product product) {
+        return product;
     }
 
     @PostMapping("/product")
     Product postProduct(@RequestBody Product product) {
-        products.add(product);
-        return product;
+        return productRepository.save(product);
     }
 
     @PutMapping("/product/{id}")
-    Product putProduct(@PathVariable UUID id, @RequestBody Product product) {
-        int productIndex = -1;
-        for (Product c : products) {
-            if (c.getId().equals(id)) {
-                productIndex = products.indexOf(c);
-                products.set(productIndex, product);
-            }
+    ResponseEntity<Product> putProduct(@PathVariable UUID id, @RequestBody Product product) {
+        if (!productRepository.existsById(id)) {
+            productRepository.save(product);
+            return new ResponseEntity<>(product, HttpStatus.CREATED);
+        } else {
+            productRepository.save(product);
+            return new ResponseEntity<>(product, HttpStatus.OK);
         }
-        return (productIndex == -1) ? postProduct(product) : product;
     }
 
-    @DeleteMapping("/product/{id}")
-    void deleteProduct(@PathVariable UUID id) {
-        products.removeIf(c -> c.getId().equals(id));
-    }
+//    @DeleteMapping("/product/{id}")
+//    void deleteProduct(@PathVariable UUID id) {
+//        products.removeIf(c -> c.getId().equals(id));
+//    }
 
 
 }

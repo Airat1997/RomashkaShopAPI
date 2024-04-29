@@ -1,13 +1,26 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
 import java.util.UUID;
 
+@Entity
+@Table(name = "product")
 public class Product {
-    private String name;
-    private String description;
-    private double price = 0;
-    private boolean productAvailability;
+    @Id
+    @Column(name = "id")
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "price")
+    private double price = 0;
+    @Column(name = "product_availability")
+    private boolean productAvailability;
+
+    public Product() {};
 
     public Product(String name, String description, double price, boolean productAvailability, UUID id) {
         if (name.length() > 256) throw new IllegalArgumentException();
