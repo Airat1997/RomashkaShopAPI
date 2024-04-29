@@ -9,11 +9,11 @@ import java.util.UUID;
 public class Product {
     @Id
     @Column(name = "id")
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
-    @Column(name = "name")
+
+    @Column(name = "name", length = 256)
     private String name;
-    @Column(name = "description")
+    @Column(name = "description", length = 4096)
     private String description;
     @Column(name = "price")
     private double price = 0;
