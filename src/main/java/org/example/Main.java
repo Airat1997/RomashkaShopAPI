@@ -21,10 +21,6 @@ public class Main {
 class RestApiController {
     private ArrayList<Product> products = new ArrayList<>();
 
-    public RestApiController() {
-        products.addAll(List.of(new Product("Game", "rpg", 2, true, UUID.randomUUID()), new Product("book", "C++", 3, true, UUID.randomUUID())));
-    }
-
     @GetMapping("/products")
     Iterable<Product> getProducts() {
         return products;
