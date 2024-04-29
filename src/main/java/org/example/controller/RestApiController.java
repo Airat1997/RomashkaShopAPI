@@ -44,10 +44,10 @@ class RestApiController {
         }
     }
 
-//    @DeleteMapping("/product/{id}")
-//    void deleteProduct(@PathVariable UUID id) {
-//        products.removeIf(c -> c.getId().equals(id));
-//    }
+    @DeleteMapping("/product/{id}")
+    void deleteProduct(@PathVariable UUID id) {
+        productRepository.deleteById(id);
+    }
 
 
 }
