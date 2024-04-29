@@ -19,7 +19,7 @@ public class Main {
 
 @RestController
 class RestApiController {
-    private List<Product> products = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
 
     public RestApiController() {
         products.addAll(List.of(new Product("Game", "rpg", 2, true, UUID.randomUUID()), new Product("book", "C++", 3, true, UUID.randomUUID())));
@@ -41,16 +41,16 @@ class RestApiController {
     }
 
     @PostMapping("/product")
-    Product postProduct(@RequestBody Product product){
+    Product postProduct(@RequestBody Product product) {
         products.add(product);
         return product;
     }
 
     @PutMapping("/product/{id}")
-    Product putProduct(@PathVariable UUID id, @RequestBody Product product){
+    Product putProduct(@PathVariable UUID id, @RequestBody Product product) {
         int productIndex = -1;
-        for (Product c : products){
-            if(c.getId().equals(id)){
+        for (Product c : products) {
+            if (c.getId().equals(id)) {
                 productIndex = products.indexOf(c);
                 products.set(productIndex, product);
             }
@@ -58,6 +58,10 @@ class RestApiController {
         return (productIndex == -1) ? postProduct(product) : product;
     }
 
+    @DeleteMapping("/product/{id}")
+    void deleteProduct(@PathVariable UUID id) {
+        products.removeIf(c -> c.getId().equals(id));
+    }
 
 
 }
