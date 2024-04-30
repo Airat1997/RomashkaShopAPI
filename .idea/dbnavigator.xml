@@ -18,6 +18,7 @@
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="0e56ad39-1181-4dbc-aff7-4cc9a6d4c436">
       <console name="PostgreSQL 15" type="STANDARD" schema="" session="Main" />
+      <console name="romashka" type="STANDARD" schema="" session="Main" />
     </connection>
     <connection id="7e07266e-d3a7-4ee4-88f0-65a86ff093ca">
       <console name="Connection" type="STANDARD" schema="" session="Main" />
