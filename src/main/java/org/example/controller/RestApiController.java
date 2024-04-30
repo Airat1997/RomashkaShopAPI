@@ -19,11 +19,13 @@ class RestApiController {
     }
 
     @GetMapping("/products")
-    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price) {
-        if (name != null && price == null) {
+    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price, Boolean productAvailability) {
+        if (name != null && price == null && productAvailability == null) {
             return productRepository.findByNameContaining(name);
-        } else if (name == null && price != null) {
+        } else if (price != null && productAvailability == null && name == null) {
             return productRepository.findByPrice(price);
+        } else if (productAvailability != null && price == null && name == null) {
+            return productRepository.findByProductAvailability(productAvailability);
         } else {
             return productRepository.findAll();
         }

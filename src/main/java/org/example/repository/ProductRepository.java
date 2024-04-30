@@ -7,5 +7,5 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     Iterable<Product> findByNameContaining(String name);
     Iterable<Product> findByPrice(Double price);
-
+    Iterable<Product> findByProductAvailability(boolean productAvailability);
 }
