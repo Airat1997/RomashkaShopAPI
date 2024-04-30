@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.model.Product;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,19 +20,21 @@ class RestApiController {
     }
 
     @GetMapping("/products")
-    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price, String priceCondition, Boolean productAvailability) {
+    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price, String priceCondition, Boolean productAvailability, Sort sort) {
         if (name != null && price == null && productAvailability == null) {
             return productRepository.findByNameContaining(name);
         } else if (price != null && productAvailability == null && name == null) {
-            if ("less".equalsIgnoreCase(priceCondition)){
+            if ("less".equalsIgnoreCase(priceCondition)) {
                 return productRepository.findByPriceLessThan(price);
-            } else if ("greater".equalsIgnoreCase(priceCondition)){
+            } else if ("greater".equalsIgnoreCase(priceCondition)) {
                 return productRepository.findByPriceGreaterThan(price);
             } else {
                 return productRepository.findByPrice(price);
             }
         } else if (productAvailability != null && price == null && name == null) {
             return productRepository.findByProductAvailability(productAvailability);
+        } else if (sort != null) {
+            return productRepository.findAll(sort);
         } else {
             return productRepository.findAll();
         }
