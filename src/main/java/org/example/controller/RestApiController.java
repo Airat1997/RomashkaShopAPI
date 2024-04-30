@@ -19,8 +19,9 @@ class RestApiController {
     }
 
     @GetMapping("/products")
-    Iterable<Product> getProducts() {
-        return productRepository.findAll();
+    Iterable<Product> getProducts(@RequestParam(required = false) String name) {
+        if (name == null) return productRepository.findAll();
+        return productRepository.findByNameContaining(name);
     }
 
     @GetMapping("/{id}")
