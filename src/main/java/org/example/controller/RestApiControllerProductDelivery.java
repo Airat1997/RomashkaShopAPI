@@ -4,10 +4,11 @@ import org.example.model.ProductDelivery;
 import org.example.repository.ProductDeliveryRepository;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 public class RestApiControllerProductDelivery {
@@ -25,6 +26,11 @@ public class RestApiControllerProductDelivery {
         return productDeliveryRepository.findAll();
     }
 
+    @GetMapping("/product_delivery/{id}")
+    ProductDelivery getProductDeliveryById(@PathVariable("id") ProductDelivery productDelivery) {
+        return productDelivery;
+    }
+
     @PostMapping("/product_delivery")
     ProductDelivery postProductDelivery(@RequestBody ProductDelivery productDelivery) {
         if (productRepository.existsById(productDelivery.getProduct().getId()))
@@ -32,5 +38,23 @@ public class RestApiControllerProductDelivery {
         else
             throw new IllegalArgumentException();
     }
+
+    @PutMapping("/product_delivery/{id}")
+    ResponseEntity<ProductDelivery> putProductDelivery(@PathVariable UUID id, @RequestBody ProductDelivery productDelivery) {
+        if (!productDeliveryRepository.existsById(id)) {
+            productDeliveryRepository.save(productDelivery);
+            return new ResponseEntity<>(productDelivery, HttpStatus.CREATED);
+        } else {
+            productDeliveryRepository.save(productDelivery);
+            return new ResponseEntity<>(productDelivery, HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/product_delivery/{id}")
+    void deleteProductDelivery(@PathVariable UUID id){
+        productDeliveryRepository.deleteById(id);
+    }
+
+
 
 }
