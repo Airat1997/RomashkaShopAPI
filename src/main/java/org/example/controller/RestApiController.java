@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 class RestApiController {
+
     private final ProductRepository productRepository;
 
     @Autowired
@@ -20,7 +21,8 @@ class RestApiController {
     }
 
     @GetMapping("/products")
-    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price, String priceCondition, Boolean productAvailability, Sort sort) {
+    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price,
+            String priceCondition, Boolean productAvailability, Sort sort) {
         if (name != null && price == null && productAvailability == null) {
             return productRepository.findByNameContaining(name);
         } else if (price != null && productAvailability == null && name == null) {

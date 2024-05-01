@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.Product;
 import org.example.model.ProductDelivery;
 import org.example.repository.ProductDeliveryRepository;
 import org.example.repository.ProductRepository;
@@ -12,11 +13,13 @@ import java.util.UUID;
 
 @RestController
 public class RestApiControllerProductDelivery {
+
     private final ProductDeliveryRepository productDeliveryRepository;
     private final ProductRepository productRepository;
 
     @Autowired
-    RestApiControllerProductDelivery(ProductDeliveryRepository productDeliveryRepository, ProductRepository productRepository) {
+    RestApiControllerProductDelivery(ProductDeliveryRepository productDeliveryRepository,
+            ProductRepository productRepository) {
         this.productDeliveryRepository = productDeliveryRepository;
         this.productRepository = productRepository;
     }
@@ -33,14 +36,16 @@ public class RestApiControllerProductDelivery {
 
     @PostMapping("/product_delivery")
     ProductDelivery postProductDelivery(@RequestBody ProductDelivery productDelivery) {
-        if (productRepository.existsById(productDelivery.getProduct().getId()))
+        if (productRepository.existsById(productDelivery.getProduct().getId())) {
             return productDeliveryRepository.save(productDelivery);
-        else
+        } else {
             throw new IllegalArgumentException();
+        }
     }
 
     @PutMapping("/product_delivery/{id}")
-    ResponseEntity<ProductDelivery> putProductDelivery(@PathVariable UUID id, @RequestBody ProductDelivery productDelivery) {
+    ResponseEntity<ProductDelivery> putProductDelivery(@PathVariable UUID id,
+            @RequestBody ProductDelivery productDelivery) {
         if (!productDeliveryRepository.existsById(id)) {
             productDeliveryRepository.save(productDelivery);
             return new ResponseEntity<>(productDelivery, HttpStatus.CREATED);
@@ -51,10 +56,9 @@ public class RestApiControllerProductDelivery {
     }
 
     @DeleteMapping("/product_delivery/{id}")
-    void deleteProductDelivery(@PathVariable UUID id){
+    void deleteProductDelivery(@PathVariable UUID id) {
         productDeliveryRepository.deleteById(id);
     }
-
 
 
 }
