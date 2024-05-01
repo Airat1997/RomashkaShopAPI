@@ -1,16 +1,10 @@
 package org.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "product_delivery")
-public class ProductDelivery {
-    private UUID id;
-    private String name;
-    private Product product;
-    private Integer quantity;
-
+public class ProductDelivery extends Document {
 }
