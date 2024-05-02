@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c6dd357c-ec7e-4aad-9ca7-b8a4d47d5120" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/RestApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/RestApiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/controller/RestApiControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/controller/RestApiControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +63,7 @@
       <recent name="org.example.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RestApiControllerTest.getProducts (1)">
+  <component name="RunManager" selected="JUnit.RestApiControllerTest.putProduct">
     <configuration name="RestApiControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="RomashkaShopAPI" />
       <extension name="coverage">
@@ -96,22 +95,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RestApiControllerTest.getProducts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="RomashkaShopAPI" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.controller" />
-      <option name="MAIN_CLASS_NAME" value="org.example.controller.RestApiControllerTest" />
-      <option name="METHOD_NAME" value="getProducts(org.springframework.test.web.reactive.server.WebTestClient)" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="RestApiControllerTest.getProductsById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="RomashkaShopAPI" />
       <extension name="coverage">
@@ -128,12 +111,45 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="RestApiControllerTest.postProduct" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="RomashkaShopAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.example.controller.RestApiControllerTest" />
+      <option name="METHOD_NAME" value="postProduct" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RestApiControllerTest.putProduct" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="RomashkaShopAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.example.controller.RestApiControllerTest" />
+      <option name="METHOD_NAME" value="putProduct" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RestApiControllerTest.putProduct" />
+        <item itemvalue="JUnit.RestApiControllerTest.postProduct" />
         <item itemvalue="JUnit.RestApiControllerTest.getProducts (1)" />
         <item itemvalue="JUnit.RestApiControllerTest" />
         <item itemvalue="JUnit.RestApiControllerTest.getProductsById" />
-        <item itemvalue="JUnit.RestApiControllerTest.getProducts" />
       </list>
     </recent_temporary>
   </component>
