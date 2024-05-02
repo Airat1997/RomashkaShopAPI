@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import org.example.model.Product;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,12 +10,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping(path = "/product")
 class RestApiController {
+
     private ArrayList<Product> products = new ArrayList<>();
 
-    @GetMapping("/products")
-    Iterable<Product> getProducts() {
-        return products;
+    @GetMapping
+    ResponseEntity<Iterable<Product>> getProducts() {
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -26,13 +30,13 @@ class RestApiController {
         return Optional.empty();
     }
 
-    @PostMapping("/product")
+    @PostMapping
     Product postProduct(@RequestBody Product product) {
         products.add(product);
         return product;
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("{id}")
     Product putProduct(@PathVariable UUID id, @RequestBody Product product) {
         int productIndex = -1;
         for (Product c : products) {
@@ -44,7 +48,7 @@ class RestApiController {
         return (productIndex == -1) ? postProduct(product) : product;
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("{id}")
     void deleteProduct(@PathVariable UUID id) {
         products.removeIf(c -> c.getId().equals(id));
     }
