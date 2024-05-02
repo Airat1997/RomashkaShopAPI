@@ -85,6 +85,14 @@ public class RestApiControllerTest {
     }
 
     @Test
-    void deleteProduct() {
+    void deleteProduct() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/product")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/" + uuid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk());
     }
 }

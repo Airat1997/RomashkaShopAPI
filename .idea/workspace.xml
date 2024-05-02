@@ -63,7 +63,7 @@
       <recent name="org.example.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RestApiControllerTest">
+  <component name="RunManager" selected="JUnit.RestApiControllerTest.deleteProduct">
     <configuration name="RestApiControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="RomashkaShopAPI" />
       <extension name="coverage">
@@ -79,7 +79,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RestApiControllerTest.getProducts (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RestApiControllerTest.deleteProduct" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="RomashkaShopAPI" />
       <extension name="coverage">
         <pattern>
@@ -89,7 +89,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.example.controller" />
       <option name="MAIN_CLASS_NAME" value="org.example.controller.RestApiControllerTest" />
-      <option name="METHOD_NAME" value="getProducts" />
+      <option name="METHOD_NAME" value="deleteProduct" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -145,11 +145,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RestApiControllerTest.deleteProduct" />
         <item itemvalue="JUnit.RestApiControllerTest" />
         <item itemvalue="JUnit.RestApiControllerTest.getProductsById" />
         <item itemvalue="JUnit.RestApiControllerTest.putProduct" />
         <item itemvalue="JUnit.RestApiControllerTest.postProduct" />
-        <item itemvalue="JUnit.RestApiControllerTest.getProducts (1)" />
       </list>
     </recent_temporary>
   </component>
