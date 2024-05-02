@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@RequestMapping(path = "/product")
 class RestApiController {
     private final ProductRepository productRepository;
 
@@ -19,38 +20,36 @@ class RestApiController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/products")
-    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price, String priceCondition, Boolean productAvailability, Sort sort) {
+    @GetMapping
+    ResponseEntity<Iterable<Product>> getProducts(@RequestParam(required = false) String name, Double price, String priceCondition, Boolean productAvailability) {
         if (name != null && price == null && productAvailability == null) {
-            return productRepository.findByNameContaining(name);
+            return new ResponseEntity<>(productRepository.findByNameContaining(name), HttpStatus.OK);
         } else if (price != null && productAvailability == null && name == null) {
             if ("less".equalsIgnoreCase(priceCondition)) {
-                return productRepository.findByPriceLessThan(price);
+                return new ResponseEntity<>(productRepository.findByPriceLessThan(price), HttpStatus.OK);
             } else if ("greater".equalsIgnoreCase(priceCondition)) {
-                return productRepository.findByPriceGreaterThan(price);
+                return new ResponseEntity<>(productRepository.findByPriceGreaterThan(price), HttpStatus.OK);
             } else {
-                return productRepository.findByPrice(price);
+                return new ResponseEntity<>(productRepository.findByPrice(price), HttpStatus.OK);
             }
         } else if (productAvailability != null && price == null && name == null) {
-            return productRepository.findByProductAvailability(productAvailability);
-        } else if (sort != null) {
-            return productRepository.findAll(sort);
+            return new ResponseEntity<>(productRepository.findByProductAvailability(productAvailability), HttpStatus.OK);
         } else {
-            return productRepository.findAll();
+            return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
         }
     }
 
-    @GetMapping("/{id}")
-    Product getProductsById(@PathVariable("id") Product product) {
-        return product;
+    @GetMapping("{id}")
+    ResponseEntity<Product> getProductsById(@PathVariable("id") Product product) {
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/product")
-    Product postProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    @PostMapping
+    ResponseEntity<Product> postProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("{id}")
     ResponseEntity<Product> putProduct(@PathVariable UUID id, @RequestBody Product product) {
         if (!productRepository.existsById(id)) {
             productRepository.save(product);
@@ -61,7 +60,7 @@ class RestApiController {
         }
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("{id}")
     void deleteProduct(@PathVariable UUID id) {
         productRepository.deleteById(id);
     }
