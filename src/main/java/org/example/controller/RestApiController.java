@@ -13,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "/product")
 class RestApiController {
+
     private final ProductRepository productRepository;
 
     @Autowired
@@ -21,22 +22,50 @@ class RestApiController {
     }
 
     @GetMapping
-    ResponseEntity<Iterable<Product>> getProducts(@RequestParam(required = false) String name, Double price, String priceCondition, Boolean productAvailability) {
+    ResponseEntity<Iterable<Product>> getProducts(@RequestParam(required = false) String name,
+            Double price, String priceCondition, Boolean productAvailability) {
+        Iterable<Product> products;
         if (name != null && price == null && productAvailability == null) {
-            return new ResponseEntity<>(productRepository.findByNameContaining(name), HttpStatus.OK);
+            products = findProductsByName(name);
         } else if (price != null && productAvailability == null && name == null) {
-            if ("less".equalsIgnoreCase(priceCondition)) {
-                return new ResponseEntity<>(productRepository.findByPriceLessThan(price), HttpStatus.OK);
-            } else if ("greater".equalsIgnoreCase(priceCondition)) {
-                return new ResponseEntity<>(productRepository.findByPriceGreaterThan(price), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(productRepository.findByPrice(price), HttpStatus.OK);
-            }
+            products = findByPrice(price, priceCondition);
         } else if (productAvailability != null && price == null && name == null) {
-            return new ResponseEntity<>(productRepository.findByProductAvailability(productAvailability), HttpStatus.OK);
+            products = findByProductAvailability(productAvailability);
         } else {
-            return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
+            products = productRepository.findAll();
         }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    Iterable<Product> findProductsByName(String name) {
+        return productRepository.findByNameContaining(name);
+    }
+    Iterable<Product> findByPrice(Double price, String priceCondition) {
+        if ("less".equalsIgnoreCase(priceCondition)) {
+            return productRepository.findByPriceLessThan(price);
+        } else if ("greater".equalsIgnoreCase(priceCondition)) {
+            return productRepository.findByPriceGreaterThan(price);
+        } else {
+            return productRepository.findByPrice(price);
+        }
+    }
+    Iterable<Product> findByProductAvailability(Boolean productAvailability) {
+        return productRepository.findByProductAvailability(productAvailability);
+    }
+    @GetMapping("/sortedByPriceAsc")
+    Iterable<Product> findAllSortedByPriceAsc() {
+        return productRepository.findAllSortedByPriceAsc();
+    }
+    @GetMapping("/sortedByPriceDesc")
+    Iterable<Product> findAllSortedByPriceDesc() {
+        return productRepository.findAllSortedByPriceDesc();
+    }
+    @GetMapping("/sortedByNameAsc")
+    Iterable<Product> findAllSortedByNameAsc() {
+        return productRepository.findAllSortedByNameAsc();
+    }
+    @GetMapping("/sortedByNameDesc")
+    Iterable<Product> findAllSortedByNameDesc() {
+        return productRepository.findAllSortedByNameDesc();
     }
 
     @GetMapping("{id}")
