@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@RequestMapping(path = "/product")
 class RestApiController {
     private final ProductRepository productRepository;
 
@@ -18,22 +19,22 @@ class RestApiController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/products")
-    Iterable<Product> getProducts() {
-        return productRepository.findAll();
+    @GetMapping
+    ResponseEntity<Iterable<Product>> getProducts() {
+        return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    Product getProductsById(@PathVariable("id") Product product) {
-        return product;
+    @GetMapping("{id}")
+    ResponseEntity<Product> getProductsById(@PathVariable("id") Product product) {
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/product")
-    Product postProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    @PostMapping
+    ResponseEntity<Product> postProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("{id}")
     ResponseEntity<Product> putProduct(@PathVariable UUID id, @RequestBody Product product) {
         if (!productRepository.existsById(id)) {
             productRepository.save(product);
@@ -44,7 +45,7 @@ class RestApiController {
         }
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("{id}")
     void deleteProduct(@PathVariable UUID id) {
         productRepository.deleteById(id);
     }
