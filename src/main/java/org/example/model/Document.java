@@ -9,7 +9,7 @@ public abstract class Document {
     @Id
     @Column(name = "id")
     private UUID id;
-    @Column(name = "name")
+    @Column(name = "name", length = 255)
     private String name;
     @ManyToOne
     private Product product;

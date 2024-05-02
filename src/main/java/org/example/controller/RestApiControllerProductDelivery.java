@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/product_delivery")
 public class RestApiControllerProductDelivery {
 
     private final ProductDeliveryRepository productDeliveryRepository;
@@ -24,26 +25,26 @@ public class RestApiControllerProductDelivery {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/product_delivery")
-    Iterable<ProductDelivery> getProductDelivery() {
-        return productDeliveryRepository.findAll();
+    @GetMapping
+    ResponseEntity<Iterable<ProductDelivery>> getProductDelivery() {
+        return new ResponseEntity<>(productDeliveryRepository.findAll(),HttpStatus.OK);
     }
 
-    @GetMapping("/product_delivery/{id}")
-    ProductDelivery getProductDeliveryById(@PathVariable("id") ProductDelivery productDelivery) {
-        return productDelivery;
+    @GetMapping("{id}")
+    ResponseEntity<ProductDelivery> getProductDeliveryById(@PathVariable("id") ProductDelivery productDelivery) {
+        return new ResponseEntity<>(productDelivery, HttpStatus.OK);
     }
 
-    @PostMapping("/product_delivery")
-    ProductDelivery postProductDelivery(@RequestBody ProductDelivery productDelivery) {
+    @PostMapping
+    ResponseEntity<ProductDelivery> postProductDelivery(@RequestBody ProductDelivery productDelivery) {
         if (productRepository.existsById(productDelivery.getProduct().getId())) {
-            return productDeliveryRepository.save(productDelivery);
+            return new ResponseEntity<>(productDeliveryRepository.save(productDelivery), HttpStatus.OK);
         } else {
             throw new IllegalArgumentException();
         }
     }
 
-    @PutMapping("/product_delivery/{id}")
+    @PutMapping("{id}")
     ResponseEntity<ProductDelivery> putProductDelivery(@PathVariable UUID id,
             @RequestBody ProductDelivery productDelivery) {
         if (!productDeliveryRepository.existsById(id)) {
@@ -55,10 +56,8 @@ public class RestApiControllerProductDelivery {
         }
     }
 
-    @DeleteMapping("/product_delivery/{id}")
+    @DeleteMapping("{id}")
     void deleteProductDelivery(@PathVariable UUID id) {
         productDeliveryRepository.deleteById(id);
     }
-
-
 }
