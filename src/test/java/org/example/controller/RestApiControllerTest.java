@@ -4,8 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
-import org.example.model.Product;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,17 +22,29 @@ public class RestApiControllerTest {
     private MockMvc mockMvc;
     String uuidString = "0bc1978c-a219-4ccc-adfc-3157910002df";
     UUID uuid = UUID.fromString(uuidString);
-    Product product = new Product("Test", "Test Product", 31.0, true, uuid);
+    String json = """
+            {
+                "description": "Test description",
+                "id": "0bc1978c-a219-4ccc-adfc-3157910002df",
+                "name": "Test",
+                "price": 10000.0,
+                "productAvailability": true
+            }
+            """;
+    String newJson = """
+            {
+                "description": "New Test description",
+                "id": "0bc1978c-a219-4ccc-adfc-3157910002df",
+                "name": "New Test",
+                "price": 250.0,
+                "productAvailability": false
+            }
+            """;
+
     @BeforeEach
     void setUp() {
-
         mockMvc = MockMvcBuilders.standaloneSetup(new RestApiController()).build();
     }
-
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void getProducts() throws Exception {
         mockMvc.perform(get("/product"))
@@ -42,31 +52,21 @@ public class RestApiControllerTest {
         mockMvc.perform(get("/non_correct_path"))
                 .andExpect(status().isNotFound());
     }
+
     @Test
     void postProduct() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"" + product.getName() + "\",\"description\":\""
-                                + product.getDescription() + "\",\"price\":" + product.getPrice()
-                                + ",\"productAvailability\":" + product.isProductAvailability()
-                                + ",\"id\":\"" + product.getId() + "\"}"))
+                        .content(json))
                 .andExpect(status().isCreated());
     }
 
     @Test
     void getProductsById() throws Exception {
-        String uuidString = "0bc1978c-a219-4ccc-adfc-3157910002df";
-        UUID uuid = UUID.fromString(uuidString);
-        Product product = new Product("Test", "Test Product", 31.0, true, uuid);
-
         mockMvc.perform(MockMvcRequestBuilders.post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"" + product.getName() + "\",\"description\":\""
-                                + product.getDescription() + "\",\"price\":" + product.getPrice()
-                                + ",\"productAvailability\":" + product.isProductAvailability()
-                                + ",\"id\":\"" + product.getId() + "\"}"))
-                .andExpect(status().isOk());
-
+                        .content(json))
+                .andExpect(status().isCreated());
         mockMvc.perform(get("/product/" + uuid))
                 .andExpect(status().isOk());
     }
@@ -74,23 +74,13 @@ public class RestApiControllerTest {
 
     @Test
     void putProduct() throws Exception {
-        String uuidString = "0bc1978c-a219-4ccc-adfc-3157910002df";
-        UUID uuid = UUID.fromString(uuidString);
-        Product product = new Product("Test", "Test Product", 31.0, true, uuid);
-
         mockMvc.perform(MockMvcRequestBuilders.post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"" + product.getName() + "\",\"description\":\""
-                                + product.getDescription() + "\",\"price\":" + product.getPrice()
-                                + ",\"productAvailability\":" + product.isProductAvailability()
-                                + ",\"id\":\"" + product.getId() + "\"}"))
+                        .content(json))
                 .andExpect(status().isCreated());
-        mockMvc.perform(MockMvcRequestBuilders.put("/product/"+uuid)
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/" + uuid)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"" + product.getName() + "\",\"description\":\""
-                                + product.getDescription() + "\",\"price\":" + product.getPrice()
-                                + ",\"productAvailability\":" + product.isProductAvailability()
-                                + ",\"id\":\"" + product.getId() + "\"}"))
+                        .content(newJson))
                 .andExpect(status().isOk());
     }
 
