@@ -20,24 +20,24 @@ class RestApiController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    Optional<Product> getProductsById(@PathVariable UUID id) {
+    @GetMapping("{id}")
+    ResponseEntity<Optional<Product>> getProductsById(@PathVariable UUID id) {
         for (Product c : products) {
             if (c.getId().equals(id)) {
-                return Optional.of(c);
+                return new ResponseEntity<>(Optional.of(c), HttpStatus.OK);
             }
         }
-        return Optional.empty();
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    Product postProduct(@RequestBody Product product) {
+    ResponseEntity<Product> postProduct(@RequestBody Product product) {
         products.add(product);
-        return product;
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    Product putProduct(@PathVariable UUID id, @RequestBody Product product) {
+    ResponseEntity<Product> putProduct(@PathVariable UUID id, @RequestBody Product product) {
         int productIndex = -1;
         for (Product c : products) {
             if (c.getId().equals(id)) {
@@ -45,7 +45,8 @@ class RestApiController {
                 products.set(productIndex, product);
             }
         }
-        return (productIndex == -1) ? postProduct(product) : product;
+        return (productIndex == -1) ? postProduct(product)
+                : new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
