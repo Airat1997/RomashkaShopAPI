@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@RequestMapping(path = "/product")
 class RestApiController {
 
     private final ProductRepository productRepository;
@@ -20,39 +21,72 @@ class RestApiController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/products")
-    Iterable<Product> getProducts(@RequestParam(required = false) String name, Double price,
-            String priceCondition, Boolean productAvailability, Sort sort) {
+
+    @GetMapping
+    ResponseEntity<Iterable<Product>> getProducts(@RequestParam(required = false) String name,
+            Double price, String priceCondition, Boolean productAvailability) {
+        Iterable<Product> products;
         if (name != null && price == null && productAvailability == null) {
-            return productRepository.findByNameContaining(name);
+            products = findProductsByName(name);
         } else if (price != null && productAvailability == null && name == null) {
-            if ("less".equalsIgnoreCase(priceCondition)) {
-                return productRepository.findByPriceLessThan(price);
-            } else if ("greater".equalsIgnoreCase(priceCondition)) {
-                return productRepository.findByPriceGreaterThan(price);
-            } else {
-                return productRepository.findByPrice(price);
-            }
+            products = findByPrice(price, priceCondition);
         } else if (productAvailability != null && price == null && name == null) {
-            return productRepository.findByProductAvailability(productAvailability);
-        } else if (sort != null) {
-            return productRepository.findAll(sort);
+            products = findByProductAvailability(productAvailability);
         } else {
-            return productRepository.findAll();
+            products = productRepository.findAll();
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    Iterable<Product> findProductsByName(String name) {
+        return productRepository.findByNameContaining(name);
+    }
+
+    Iterable<Product> findByPrice(Double price, String priceCondition) {
+        if ("less".equalsIgnoreCase(priceCondition)) {
+            return productRepository.findByPriceLessThan(price);
+        } else if ("greater".equalsIgnoreCase(priceCondition)) {
+            return productRepository.findByPriceGreaterThan(price);
+        } else {
+            return productRepository.findByPrice(price);
         }
     }
 
-    @GetMapping("/{id}")
-    Product getProductsById(@PathVariable("id") Product product) {
-        return product;
+    Iterable<Product> findByProductAvailability(Boolean productAvailability) {
+        return productRepository.findByProductAvailability(productAvailability);
     }
 
-    @PostMapping("/product")
-    Product postProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    @GetMapping("/sortedByPriceAsc")
+    Iterable<Product> findAllSortedByPriceAsc() {
+        return productRepository.findAllSortedByPriceAsc();
     }
 
-    @PutMapping("/product/{id}")
+    @GetMapping("/sortedByPriceDesc")
+    Iterable<Product> findAllSortedByPriceDesc() {
+        return productRepository.findAllSortedByPriceDesc();
+    }
+
+    @GetMapping("/sortedByNameAsc")
+    Iterable<Product> findAllSortedByNameAsc() {
+        return productRepository.findAllSortedByNameAsc();
+    }
+
+    @GetMapping("/sortedByNameDesc")
+    Iterable<Product> findAllSortedByNameDesc() {
+        return productRepository.findAllSortedByNameDesc();
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<Product> getProductsById(@PathVariable("id") Product product) {
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @PostMapping
+    ResponseEntity<Product> postProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
+    }
+
+    @PutMapping("{id}")
     ResponseEntity<Product> putProduct(@PathVariable UUID id, @RequestBody Product product) {
         if (!productRepository.existsById(id)) {
             productRepository.save(product);
@@ -63,10 +97,9 @@ class RestApiController {
         }
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("{id}")
     void deleteProduct(@PathVariable UUID id) {
         productRepository.deleteById(id);
     }
-
 
 }
