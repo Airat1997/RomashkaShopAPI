@@ -45,6 +45,7 @@ public class RestApiControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(new RestApiController()).build();
     }
+
     @Test
     void getProducts() throws Exception {
         mockMvc.perform(get("/product"))

@@ -67,7 +67,7 @@
       <recent name="org.example.controller" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.RestApiControllerTest">
     <configuration name="RestApiControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="RomashkaShopAPI" />
       <extension name="coverage">
@@ -149,8 +149,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RestApiControllerTest.deleteProduct" />
         <item itemvalue="JUnit.RestApiControllerTest" />
+        <item itemvalue="JUnit.RestApiControllerTest.deleteProduct" />
         <item itemvalue="JUnit.RestApiControllerTest.getProductsById" />
         <item itemvalue="JUnit.RestApiControllerTest.putProduct" />
         <item itemvalue="JUnit.RestApiControllerTest.postProduct" />
